@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raliegh's Tech Store</title>
+ <style>
+    /* Global Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #1e1e2f;
+      color: #fff;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      flex: 1 100%;
+      margin-bottom: 10px;
+    }
+
+    .top-nav {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .top-nav a {
+      color: #ffffffcc;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 6px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .top-nav a:hover {
+      background-color: #3a3a50;
+      color: #fff;
+    }
+
+    .summary {
+      background-color: #e9eff5;
+      padding: 20px 40px;
+      font-size: 1.1rem;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .search-bar {
+      margin: 30px 40px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .search-bar button {
+      background-color: #007bff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .search-bar button:hover {
+      background-color: #0056b3;
+    }
+
+    .featured-products {
+      padding: 40px;
+    }
+
+    .featured-products h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: #1e1e2f;
+    }
+
+    .product-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 25px;
+    }
+
+    .product {
+      background-color: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+      transition: transform 0.2s ease-in-out;
+      text-align: center;
+    }
+
+    .product:hover {
+      transform: translateY(-5px);
+    }
+
+    .product img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      margin-bottom: 15px;
+    }
+
+    .product h3 {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .product p {
+      font-size: 1rem;
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .top-nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      header {
+        text-align: center;
+      }
+
+      .search-bar {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Raliegh's Tech Store</h1>
+    <nav class="top-nav">
+      <a href="phone&tablet.html">Phones&Tablets</a>
+      <a href="Laptop&PCs.html">Laptops&PCs</a>
+      <a href="Accessories.html">Tech Accessories</a>
+      <a href="Checkout.html">Checkout</a>
+      <a href="form.html">Login</a>
+      <a href="Registration.html">Register</a>
+    </nav>
+  </header>
+
+  <div class="summary">
+    Welcome to Raliegh's Tech Store – your one-stop shop for the latest smartphones, tablets, laptops, PCs, and accessories. Enjoy fast checkout, great deals, and top brands all in one place.
+  </div>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search for products...">
+    <button onclick="searchProduct()">Search</button>
+  </div>
+
+  <section class="featured-products">
+    <h2>Popular Right Now</h2>
+    <div class="product-list">
+      <div class="product">
+        <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-max" alt="iPhone 15 Pro Max">
+        <h3>iPhone 15 Pro Max</h3>
+        <p>$1199</p>
+      </div>
+      <div class="product">
+        <img src="https://images.samsung.com/is/image/samsung/assets/global/galaxy-s24/galaxy-s24-ultra-graphite.png" alt="Galaxy S24 Ultra">
+        <h3>Galaxy S24 Ultra</h3>
+        <p>$1199</p>
+      </div>
+      <div class="product">
+        <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-pro-2024" alt="iPad Pro 2024">
+        <h3>iPad Pro 2024</h3>
+        <p>$1099</p>
+      </div>
+      <div class="product">
+        <img src="https://images.samsung.com/is/image/samsung/p6pim/levant/galaxy-tab-s9-ultra-5g-sm-x916bzaamea-537083399?$650_519_PNG$" alt="Galaxy Tab S9 Ultra">
+        <h3>Galaxy Tab S9 Ultra</h3>
+        <p>$1299</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function searchProduct() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const links = [
+        { name: 'phones', url: 'phones_tablets.html' },
+        { name: 'tablets', url: 'phones_tablets.html' },
+        { name: 'laptops', url: 'laptops_pcs.html' },
+        { name: 'pcs', url: 'laptops_pcs.html' },
+        { name: 'accessories', url: 'tech_accessories.html' },
+        { name: 'checkout', url: 'cart_checkout.html' },
+      ];
+
+      const result = links.find(link => query.includes(link.name));
+      if (result) {
+        window.location.href = result.url;
+      } else {
+        alert('Product not found. Please try again.');
+      }
+    }
+
+  function addToCart(name, price, shipping, shipmentTime) {
+    const product = { name, price, shipping, shipmentTime };
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push(product);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    window.location.href = 'cart_checkout.html'; // Redirect to cart
+  }
+</script>
+
+  </script>
+  
+</body>
+</html>

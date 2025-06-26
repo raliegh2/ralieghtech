@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart & Checkout</title>
+</head>
+   <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f7fb;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .cart-container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .product-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+      padding: 15px 0;
+    }
+
+    .product-info {
+      flex: 1;
+    }
+
+    .product-info h3 {
+      margin-bottom: 5px;
+    }
+
+    .shipment-info {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .price {
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .remove-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .undo-btn {
+      display: block;
+      margin: 15px auto 0;
+      background-color: #ffc107;
+      color: #000;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: none;
+    }
+
+    .total {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      text-align: right;
+      font-weight: bold;
+    }
+
+    .checkout-btn {
+      display: block;
+      margin: 30px auto 10px;
+      background-color: #28a745;
+      color: white;
+      padding: 12px 25px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .checkout-btn:hover {
+      background-color: #218838;
+    }
+  </style>
+<body>
+  <h1>Cart</h1>
+  <ul id="cart-list"></ul>
+  <p id="total">Total: $0</p>
+  <button onclick="checkout()">Checkout</button>
+  <h2>Checkout Summary</h2>
+  <div id="summary">No items checked out yet.</div>
+
+  <a href="index.html">Back to Home</a>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function renderCart() {
+      const list = document.getElementById('cart-list');
+      const totalDisplay = document.getElementById('total');
+      list.innerHTML = '';
+      let total = 0;
+      cart.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} - $${item.price}`;
+        list.appendChild(li);
+        total += item.price;
+      });
+      totalDisplay.textContent = 'Total: $' + total;
+    }
+
+    function checkout() {
+      if (cart.length === 0) {
+        document.getElementById('summary').textContent = 'Your cart is empty.';
+        return;
+      }
+      let summary = 'You have purchased:\n';
+      let total = 0;
+      cart.forEach(item => {
+        summary += `- ${item.name}: $${item.price}\n`;
+        total += item.price;
+      });
+      summary += `\nTotal Amount: $${total}`;
+      document.getElementById('summary').textContent = summary;
+      localStorage.removeItem('cart');
+      cart = [];
+      renderCart();
+    }
+
+    renderCart();
+  </script>
+</body>
+</html>

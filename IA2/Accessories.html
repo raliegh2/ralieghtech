@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech Accessories</title>
+   <style>
+    /* General Body Styling */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f7f6; /* Light gray background */
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Header Styling */
+    h1 {
+      text-align: center;
+      color: #2c3e50; /* Dark blue-gray for heading */
+      margin-bottom: 40px;
+      font-size: 2.5em;
+      border-bottom: 2px solid #3498db; /* Blue underline */
+      padding-bottom: 10px;
+      display: inline-block;
+      width: 100%;
+    }
+
+    /* Product Container Styling */
+    .product-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+
+    /* Individual Product Card Styling */
+    .product {
+      background-color: #ffffff; /* White background for product cards */
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Soft shadow */
+      padding: 25px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden; /* Ensures image corners are rounded */
+    }
+
+    .product:hover {
+      transform: translateY(-8px); /* Lift effect on hover */
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+    }
+
+    .product img {
+      max-width: 100%;
+      height: 200px; /* Fixed height for images */
+      object-fit: contain; /* Ensures the image fits without cropping */
+      border-radius: 8px; /* Slightly rounded corners for images */
+      margin-bottom: 15px;
+      display: block; /* Remove extra space below image */
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .product h2 {
+      color: #34495e; /* Darker blue-gray for product titles */
+      font-size: 1.6em;
+      margin-bottom: 10px;
+      text-transform: capitalize;
+    }
+
+    .product p {
+      color: #555;
+      font-size: 1.2em;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    /* Button Styling */
+    .product button {
+      background-color: #3498db; /* Bright blue for buttons */
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1.1em;
+      font-weight: 600;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    }
+
+    .product button:hover {
+      background-color: #2980b9; /* Slightly darker blue on hover */
+      transform: translateY(-2px); /* Slight lift on hover */
+    }
+
+    .product button:active {
+      transform: translateY(0);
+    }
+
+    /* Back to Home Link Styling */
+    a {
+      display: block;
+      text-align: center;
+      margin-top: 50px;
+      color: #3498db; /* Blue for the link */
+      text-decoration: none;
+      font-size: 1.1em;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: #2980b9; /* Darker blue on hover */
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tech Accessories</h1>
+
+  <div class="product">
+    <h2>Wireless Mouse</h2>
+    <p>Price: $49</p>
+    <button onclick="addToCart('Wireless Mouse', 49)">Add to Cart</button>
+  </div>
+
+  <div class="product">
+    <h2>Bluetooth Headphones</h2>
+    <p>Price: $89</p>
+    <button onclick="addToCart('Bluetooth Headphones', 89)">Add to Cart</button>
+  </div>
+
+  <a href="index.html">Back to Home</a>
+
+  <script>
+    function addToCart(name, price) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.push({ name, price });
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert(name + ' added to cart.');
+    }
+  </script>
+</body>
+</html>

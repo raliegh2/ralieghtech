@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Online Tech Store – iPhones & Samsung</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      margin: 0;
+      padding: 0; /* Removed padding to allow header to span full width */
+    }
+    h1, h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-top: 2rem; /* Add some space above headings */
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+      width: 100%; /* Ensure header spans full width */
+      box-sizing: border-box; /* Include padding in width calculation */
+    }
+    .header-icons {
+      display: flex;
+      gap: 1rem;
+    }
+    .header-icons .icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #2c3e50;
+    }
+    .product-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 2rem auto; /* Center the product container */
+      padding: 0 1rem; /* Add some horizontal padding for smaller screens */
+    }
+    .product {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .product img {
+      width: 100%;
+      height: auto;
+      max-height: 200px;
+      object-fit: contain;
+      margin-bottom: 0.75rem;
+    }
+    .product h3 {
+      margin: 0.75rem 0 0.5rem;
+      font-weight: 600;
+    }
+    .product p {
+      margin: 0.5rem 0;
+      font-weight: 500;
+    }
+    .product label {
+      font-weight: 600;
+      display: block;
+      margin: 0.5rem 0 0.25rem;
+      text-align: left;
+    }
+    .product select,
+    .product input[type="number"] {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 0.9rem;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+    .product input[type="number"] {
+      max-width: 100%;
+    }
+    .product button {
+      background-color: #0071e3;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+      margin-top: auto; /* Push button to the bottom */
+    }
+    .product button:hover {
+      background-color: #005bb5;
+    }
+    /* Star rating styles - not currently used in HTML, but kept for completeness */
+    .star-rating {
+      display: inline-block;
+      margin-top: 0.5rem;
+    }
+    .star-rating input[type="radio"] {
+      display: none;
+    }
+    .star-rating label {
+      font-size: 1.5rem;
+      color: #ccc;
+      cursor: pointer;
+      float: right;
+      margin: 0;
+      padding: 0 2px;
+    }
+    .star-rating input[type="radio"]:checked ~ label {
+      color: #ffcc00;
+    }
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+      color: #ffcc00;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 8px;
+      position: relative;
+    }
+    .close-button {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .close-button:hover,
+    .close-button:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .user-info p {
+      margin-bottom: 10px;
+    }
+    .user-info strong {
+      display: inline-block;
+      width: 80px;
+    }
+    .back-to-home {
+      display: block;
+      text-align: center;
+      margin: 2rem auto;
+      padding: 0.75rem 1.5rem;
+      background-color: #2c3e50;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      max-width: 150px;
+      transition: background-color 0.3s ease;
+    }
+    .back-to-home:hover {
+      background-color: #34495e;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+  <div class="header">
+    <h1>Raliegh's Tech Store</h1>
+    <div class="header-icons">
+      <a href="Laptops&PCs.html">Laptops&PCs</a>
+      <a href="Accessories.html">Tech Accessories</a>
+      <i class="fas fa-shopping-cart icon" id="cartIcon"></i>
+      <i class="fas fa-user-circle icon" id="accountIcon"></i>
+    </div>
+  </div>
+
+  <h2>iPhone Collection</h2>
+  <div class="product-container">
+    <div class="product">
+      <img src="assets/iphoneX.jpg" alt="iPhone X" />
+      <h3>iPhone X</h3>
+      <p class="price">Price: $499</p>
+      <label for="storage-x">Choose Storage:</label>
+      <select id="storage-x" name="storage-x">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphoneXS.jpg" alt="iPhone XS" />
+      <h3>iPhone XS</h3>
+      <p class="price">Price: $549</p>
+      <label for="storage-xs">Choose Storage:</label>
+      <select id="storage-xs" name="storage-xs">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphoneXSmax.jpg" alt="iPhone XS Max" />
+      <h3>iPhone XS Max</h3>
+      <p class="price">Price: $599</p>
+      <label for="storage-xsmax">Choose Storage:</label>
+      <select id="storage-xsmax" name="storage-xsmax">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphone11.jpg" alt="iPhone 11" />
+      <h3>iPhone 11</h3>
+      <p class="price">Price: $599</p>
+      <label for="storage-11">Choose Storage:</label>
+      <select id="storage-11" name="storage-11">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphone11pro.jpg" alt="iPhone 11 Pro" />
+      <h3>iPhone 11 Pro</h3>
+      <p class="price">Price: $699</p>
+      <label for="storage-11pro">Choose Storage:</label>
+      <select id="storage-11pro" name="storage-11pro">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/11promax.jpg" alt="iPhone 11 Pro Max" />
+      <h3>iPhone 11 Pro Max</h3>
+      <p class="price">Price: $749</p>
+      <label for="storage-11promax">Choose Storage:</label>
+      <select id="storage-11promax" name="storage-11promax">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphone12.jpg" alt="iPhone 12" />
+      <h3>iPhone 12</h3>
+      <p class="price">Price: $649</p>
+      <label for="storage-12">Choose Storage:</label>
+      <select id="storage-12" name="storage-12">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphone12pro.jpg" alt="iPhone 12 Pro" />
+      <h3>iPhone 12 Pro</h3>
+      <p class="price">Price: $849</p>
+      <label for="storage-12pro">Choose Storage:</label>
+      <select id="storage-12pro" name="storage-12pro">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphone12promax.jpg" alt="iPhone 12 Pro Max" />
+      <h3>iPhone 12 Pro Max</h3>
+      <p class="price">Price: $899</p>
+      <label for="storage-12promax">Choose Storage:</label>
+      <select id="storage-12promax" name="storage-12promax">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphone13.jpg" alt="iPhone 13" />
+      <h3>iPhone 13</h3>
+      <p class="price">Price: $749</p>
+      <label for="storage-13">Choose Storage:</label>
+      <select id="storage-13" name="storage-13">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphone13pro.jpg" alt="iPhone 13 Pro" />
+      <h3>iPhone 13 Pro</h3>
+      <p class="price">Price: $949</p>
+      <label for="storage-13pro">Choose Storage:</label>
+      <select id="storage-13pro" name="storage-13pro">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphone13promax.jpg" alt="iPhone 13 Pro Max" />
+      <h3>iPhone 13 Pro Max</h3>
+      <p class="price">Price: $999</p>
+      <label for="storage-13promax">Choose Storage:</label>
+      <select id="storage-13promax" name="storage-13promax">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphone14.jpg" alt="iPhone 14" />
+      <h3>iPhone 14</h3>
+      <p class="price">Price: $849</p>
+      <label for="storage-14">Choose Storage:</label>
+      <select id="storage-14" name="storage-14">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphone14pro.jpg" alt="iPhone 14 Pro" />
+      <h3>iPhone 14 Pro</h3>
+      <p class="price">Price: $1049</p>
+      <label for="storage-14pro">Choose Storage:</label>
+      <select id="storage-14pro" name="storage-14pro">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphone14promax.jpg" alt="iPhone 14 Pro Max" />
+      <h3>iPhone 14 Pro Max</h3>
+      <p class="price">Price: $1099</p>
+      <label for="storage-14promax">Choose Storage:</label>
+      <select id="storage-14promax" name="storage-14promax">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphone15.jpg" alt="iPhone 15" />
+      <h3>iPhone 15</h3>
+      <p class="price">Price: $899</p>
+      <label for="storage-15">Choose Storage:</label>
+      <select id="storage-15" name="storage-15">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphone15pro.jpg" alt="iPhone 15 Pro" />
+      <h3>iPhone 15 Pro</h3>
+      <p class="price">Price: $1099</p>
+      <label for="storage-15pro">Choose Storage:</label>
+      <select id="storage-15pro" name="storage-15pro">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/15promax.jpg" alt="iPhone 15 Pro Max" />
+      <h3>iPhone 15 Pro Max</h3>
+      <p class="price">Price: $1199</p>
+      <label for="storage-15promax">Choose Storage:</label>
+      <select id="storage-15promax" name="storage-15promax">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphone16.jpg" alt="iPhone 16" />
+      <h3>iPhone 16</h3>
+      <p class="price">Price: $999</p>
+      <label for="storage-16">Choose Storage:</label>
+      <select id="storage-16" name="storage-16">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphone16pro.jpg" alt="iPhone 16 Pro" />
+      <h3>iPhone 16 Pro</h3>
+      <p class="price">Price: $1199</p>
+      <label for="storage-16pro">Choose Storage:</label>
+      <select id="storage-16pro" name="storage-16pro">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/iphone16promax.jpg" alt="iPhone 16 Pro Max" />
+      <h3>iPhone 16 Pro Max</h3>
+      <p class="price">Price: $1299</p>
+      <label for="storage-16promax">Choose Storage:</label>
+      <select id="storage-16promax" name="storage-16promax">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$50)</option>
+        <option value="512">512GB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Apple Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+  </div>
+
+  <h2>Samsung Collection</h2>
+  <div class="product-container">
+    <div class="product">
+      <img src="assets/samsung galaxyA13.jpg" alt="Samsung Galaxy A13" />
+      <h3>Samsung Galaxy A13</h3>
+      <p class="price">Price: $199</p>
+      <label for="storage-a13">Choose Storage:</label>
+      <select id="storage-a13" name="storage-a13">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$30)</option>
+        <option value="512">512GB (+$80)</option>
+        <option value="1024">1TB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Samsung Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/samsung galaxy A14.jpg" alt="Samsung Galaxy A14" />
+      <h3>Samsung Galaxy A14</h3>
+      <p class="price">Price: $179</p>
+      <label for="storage-a14">Choose Storage:</label>
+      <select id="storage-a14" name="storage-a14">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$30)</option>
+        <option value="512">512GB (+$80)</option>
+        <option value="1024">1TB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Samsung Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/samsung galaxy A54.jpg" alt="Samsung Galaxy A54" />
+      <h3>Samsung Galaxy A54</h3>
+      <p class="price">Price: $399</p>
+      <label for="storage-a54">Choose Storage:</label>
+      <select id="storage-a54" name="storage-a54">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$30)</option>
+        <option value="512">512GB (+$80)</option>
+        <option value="1024">1TB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Samsung Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/samsung galaxy A73.jpg" alt="Samsung Galaxy A73" />
+      <h3>Samsung Galaxy A73</h3>
+      <p class="price">Price: $469</p>
+      <label for="storage-a73">Choose Storage:</label>
+      <select id="storage-a73" name="storage-a73">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$30)</option>
+        <option value="512">512GB (+$80)</option>
+        <option value="1024">1TB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Samsung Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/samsung galaxy M14.jpg" alt="Samsung Galaxy M14" />
+      <h3>Samsung Galaxy M14</h3>
+      <p class="price">Price: $219</p>
+      <label for="storage-m14">Choose Storage:</label>
+      <select id="storage-m14" name="storage-m14">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$30)</option>
+        <option value="512">512GB (+$80)</option>
+        <option value="1024">1TB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Samsung Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/samsung galaxy S21 FE.jpg" alt="Samsung Galaxy S21 FE" />
+      <h3>Samsung Galaxy S21 FE</h3>
+      <p class="price">Price: $599</p>
+      <label for="storage-s21fe">Choose Storage:</label>
+      <select id="storage-s21fe" name="storage-s21fe">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$30)</option>
+        <option value="512">512GB (+$80)</option>
+        <option value="1024">1TB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Samsung Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/samsung galaxy S22.jpg" alt="Samsung Galaxy S22" />
+      <h3>Samsung Galaxy S22</h3>
+      <p class="price">Price: $699</p>
+      <label for="storage-s22">Choose Storage:</label>
+      <select id="storage-s22" name="storage-s22">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$30)</option>
+        <option value="512">512GB (+$80)</option>
+        <option value="1024">1TB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Samsung Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/samsung galaxy S24 ultra.jpg" alt="Samsung Galaxy S24 Ultra" />
+      <h3>Samsung Galaxy S24 Ultra</h3>
+      <p class="price">Price: $1199</p>
+      <label for="storage-s24ultra">Choose Storage:</label>
+      <select id="storage-s24ultra" name="storage-s24ultra">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$30)</option>
+        <option value="512">512GB (+$80)</option>
+        <option value="1024">1TB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Samsung Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/samsung galaxy Note 20.jpg" alt="Samsung Galaxy Note 20" />
+      <h3>Samsung Galaxy Note 20</h3>
+      <p class="price">Price: $849</p>
+      <label for="storage-note20">Choose Storage:</label>
+      <select id="storage-note20" name="storage-note20">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$30)</option>
+        <option value="512">512GB (+$80)</option>
+        <option value="1024">1TB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Samsung Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/samsung galaxy Z Flip5.jpg" alt="Samsung Galaxy Z Flip5" />
+      <h3>Samsung Galaxy Z Flip5</h3>
+      <p class="price">Price: $999</p>
+      <label for="storage-zflip5">Choose Storage:</label>
+      <select id="storage-zflip5" name="storage-zflip5">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$30)</option>
+        <option value="512">512GB (+$80)</option>
+        <option value="1024">1TB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Samsung Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/samsung galaxy Z Fold5.jpg" alt="Samsung Galaxy Z Fold5" />
+      <h3>Samsung Galaxy Z Fold5</h3>
+      <p class="price">Price: $1799</p>
+      <label for="storage-zfold5">Choose Storage:</label>
+      <select id="storage-zfold5" name="storage-zfold5">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$30)</option>
+        <option value="512">512GB (+$80)</option>
+        <option value="1024">1TB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Samsung Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="assets/samsung galaxy A04s.jpg" alt="Samsung Galaxy A04s" />
+      <h3>Samsung Galaxy A04s</h3>
+      <p class="price">Price: $149</p>
+      <label for="storage-a04s">Choose Storage:</label>
+      <select id="storage-a04s" name="storage-a04s">
+        <option value="64">64GB</option>
+        <option value="128">128GB (+$30)</option>
+        <option value="512">512GB (+$80)</option>
+        <option value="1024">1TB (+$150)</option>
+      </select>
+      <p class="shipping">Shipped by: Samsung Logistics</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+  </div>
+
+  <h2>Tablets</h2>
+  <div class="product-container">
+    <div class="product">
+      <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-pro-2024" alt="iPad Pro 2024">
+      <h3>iPad Pro 2024</h3>
+      <p class="price">Price: $1099</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-air-2024" alt="iPad Air 2024">
+      <h3>iPad Air 2024</h3>
+      <p class="price">Price: $799</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://images.samsung.com/is/image/samsung/p6pim/levant/galaxy-tab-s9-ultra-5g-sm-x916bzaamea-537083399?$650_519_PNG$" alt="Galaxy Tab S9 Ultra">
+      <h3>Galaxy Tab S9 Ultra</h3>
+      <p class="price">Price: $1299</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="https://images.samsung.com/is/image/samsung/p6pim/levant/galaxy-tab-a9-sm-x110nzaamea-537083310?$650_519_PNG$" alt="Galaxy Tab A9">
+      <h3>Galaxy Tab A9</h3>
+      <p class="price">Price: $299</p>
+      <button class="add-to-cart-btn">Add to Cart</button>
+    </div>
+  </div>
+
+  <a href="index.html" class="back-to-home">Back to Home</a>
+
+  <div id="accountModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h2>Account Information</h2>
+      <div class="user-info">
+        <p><strong>Email:</strong> <span id="userEmail"></span></p>
+        <p><strong>Name:</strong> <span id="userName"></span></p>
+        <p><strong>Phone:</strong> <span id="userPhone"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Function to add a product to the cart
+    function addToCart(productName, productPrice, productStorage, productShipping) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+      // Add the product to the cart array
+      cart.push({
+        name: productName,
+        price: productPrice,
+        storage: productStorage,
+        shipping: productShipping
+      });
+
+      // Store the updated cart in localStorage
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert(productName + ' added to cart!'); // User feedback
+    }
+
+    // Event listeners for "Add to Cart" buttons
+    document.addEventListener('DOMContentLoaded', () => {
+      const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+
+      addToCartButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+          const productElement = event.target.closest('.product');
+          const productName = productElement.querySelector('h3').innerText;
+          
+          // Extract price, removing "Price: $" and converting to number
+          let productPrice = parseFloat(productElement.querySelector('.price').innerText.replace('Price: $', ''));
+
+          let productStorage = 'N/A'; // Default for products without storage options
+          const storageSelect = productElement.querySelector('select');
+          if (storageSelect) {
+            productStorage = storageSelect.options[storageSelect.selectedIndex].text;
+            // Adjust price based on storage selection if necessary
+            const selectedOption = storageSelect.options[storageSelect.selectedIndex];
+            const storageAddOn = selectedOption.innerText.match(/\+\$(\d+)\)/);
+            if (storageAddOn) {
+                productPrice += parseFloat(storageAddOn[1]);
+            }
+          }
+
+          // Extract shipping information
+          const productShipping = productElement.querySelector('.shipping') ? productElement.querySelector('.shipping').innerText.replace('Shipped by: ', '') : 'N/A';
+
+          addToCart(productName, productPrice, productStorage, productShipping);
+        });
+      });
+    });
+
+
+    // Modal functionality (remains unchanged)
+    const accountModal = document.getElementById("accountModal");
+    const accountIcon = document.getElementById("accountIcon");
+    const closeButton = document.getElementsByClassName("close-button")[0];
+
+    accountIcon.onclick = function() {
+      const userInfo = {
+        email: "customer@example.com",
+        name: "John Doe",
+        phone: "123-456-7890"
+      };
+
+      document.getElementById("userEmail").innerText = userInfo.email;
+      document.getElementById("userName").innerText = userInfo.name;
+      document.getElementById("userPhone").innerText = userInfo.phone;
+      accountModal.style.display = "block";
+    }
+
+    closeButton.onclick = function() {
+      accountModal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      if (event.target == accountModal) {
+        accountModal.style.display = "none";
+      }
+    }
+
+    // This is the specific change for the cart icon redirect
+    document.getElementById('cartIcon').onclick = function() {
+      window.location.href = 'Checkout.html'; 
+    };
+  </script>
+</body>
+</html>

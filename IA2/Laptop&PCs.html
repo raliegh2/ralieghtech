@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Laptops & PCs</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f7f6;
+      color: #333;
+    }
+
+    h1, h2.section-heading {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 10px;
+    }
+
+    h2.section-heading {
+      font-size: 1.8em;
+      margin-top: 60px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .product-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .product {
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .product img {
+      width: 100%;
+      height: 180px;
+      object-fit: contain;
+      margin-bottom: 10px;
+      border-radius: 8px;
+    }
+
+    .product h2 {
+      font-size: 1.3em;
+      margin: 10px 0;
+      color: #34495e;
+    }
+
+    .product p {
+      font-size: 1em;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    select, button {
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 1em;
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    a {
+      display: block;
+      text-align: center;
+      margin-top: 40px;
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Laptops & PCs (2025 Editions)</h1>
+
+<!-- Dell Section -->
+<h2 class="section-heading">Dell Collection</h2>
+<div class="product-container" id="dellList"></div>
+
+<!-- HP Section -->
+<h2 class="section-heading">HP Collection</h2>
+<div class="product-container" id="hpList"></div>
+
+<!-- Acer Section -->
+<h2 class="section-heading">Acer Collection</h2>
+<div class="product-container" id="acerList"></div>
+
+<a href="index.html">Back to Home</a>
+
+<script>
+  const storageOptions = [
+    { label: '128GB', priceAdd: 0 },
+    { label: '512GB', priceAdd: 150 },
+    { label: '1TB', priceAdd: 300 },
+    { label: '2TB', priceAdd: 500 }
+  ];
+
+  const laptops = [
+    // Dell
+    { brand: 'Dell', model: 'XPS 16 OLED (9520)', basePrice: 1599, img: 'https://i.dell.com/sites/csimages/App-Merchandizing_Images/all/xps-16-oled-gen5.png' },
+    { brand: 'Dell', model: 'Latitude 9440', basePrice: 1999, img: 'https://i.dell.com/sites/csimages/App-Merchandizing_Images/all/latitude-9440.png' },
+    { brand: 'Dell', model: 'Precision 7780 Mobile', basePrice: 2499, img: 'https://i.dell.com/sites/csimages/App-Merchandizing_Images/all/precision-7780-mobile.png' },
+    { brand: 'Dell', model: 'Inspiron 14 Plus', basePrice: 849, img: 'https://i.dell.com/sites/csimages/App-Merchandizing_Images/all/inspiron-14-plus.png' },
+    { brand: 'Dell', model: 'G16 Gaming', basePrice: 1399, img: 'https://i.dell.com/sites/csimages/App-Merchandizing_Images/all/g16-gaming.png' },
+    { brand: 'Dell', model: 'Alienware m18 (2025)', basePrice: 2299, img: 'https://i.dell.com/sites/csimages/App-Merchandizing_Images/all/alienware-m18.png' },
+
+    // HP
+    { brand: 'HP', model: 'Spectre x360 14 Plus', basePrice: 1699, img: 'https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c08303382.png' },
+    { brand: 'HP', model: 'Elite Dragonfly G4', basePrice: 2199, img: 'https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c08427234.png' },
+    { brand: 'HP', model: 'Omen 17', basePrice: 1999, img: 'https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c08604271.png' },
+    { brand: 'HP', model: 'Pavilion Aero 13', basePrice: 849, img: 'https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c08709355.png' },
+    { brand: 'HP', model: 'ZBook Fury 16 G10', basePrice: 2799, img: 'https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c08810412.png' },
+    { brand: 'HP', model: 'Envy 16', basePrice: 1299, img: 'https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c08911567.png' },
+
+    // Acer
+    { brand: 'Acer', model: 'Swift X 14', basePrice: 1199, img: 'https://static.acer.com/up/Resource/Acer/Laptops/Swift_X_14/images/20240515/swift-x-14.png' },
+    { brand: 'Acer', model: 'Predator Triton 18X', basePrice: 2499, img: 'https://static.acer.com/up/Resource/Acer/Laptops/Predator_Triton_18X/images/20240515/triton-18x.png' },
+    { brand: 'Acer', model: 'Spin 714', basePrice: 899, img: 'https://static.acer.com/up/Resource/Acer/Laptops/Spin_714/images/20240515/spin-714.png' },
+    { brand: 'Acer', model: 'Helios Neo 16', basePrice: 1799, img: 'https://static.acer.com/up/Resource/Acer/Laptops/Helios_Neo_16/images/20240515/helios-neo-16.png' },
+    { brand: 'Acer', model: 'Aspire Vero 15', basePrice: 799, img: 'https://static.acer.com/up/Resource/Acer/Laptops/Aspire_Vero_15/images/20240515/aspire-vero-15.png' },
+    { brand: 'Acer', model: 'Chromebook Spin 713', basePrice: 699, img: 'https://static.acer.com/up/Resource/Acer/Laptops/Chromebook_Spin_713/images/20240515/chromebook-spin-713.png' }
+  ];
+
+  const dellList = document.getElementById('dellList');
+  const hpList = document.getElementById('hpList');
+  const acerList = document.getElementById('acerList');
+
+  laptops.forEach((laptop, index) => {
+    const id = `storage-${index}`;
+    const div = document.createElement('div');
+    div.className = 'product';
+    div.innerHTML = `
+      <img src="${laptop.img}" alt="${laptop.brand} ${laptop.model}">
+      <h2>${laptop.brand} ${laptop.model}</h2>
+      <p>Base Price: $${laptop.basePrice}</p>
+      <select id="${id}">
+        ${storageOptions.map(o => `<option value="${o.priceAdd}">${o.label} (+$${o.priceAdd})</option>`).join('')}
+      </select>
+      <button onclick="addToCart('${laptop.brand} ${laptop.model}', ${laptop.basePrice}, '${id}')">Add to Cart</button>
+    `;
+
+    if (laptop.brand === 'Dell') dellList.appendChild(div);
+    else if (laptop.brand === 'HP') hpList.appendChild(div);
+    else acerList.appendChild(div);
+  });
+
+  function addToCart(name, basePrice, selectId) {
+    const select = document.getElementById(selectId);
+    const storageAdd = parseInt(select.value);
+    const storageLabel = select.options[select.selectedIndex].text.split(' ')[0];
+    const total = basePrice + storageAdd;
+
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push({ name: `${name} – ${storageLabel}`, price: total });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    window.location.href = 'cart_checkout.html';
+  }
+</script>
+
+</body>
+</html>
