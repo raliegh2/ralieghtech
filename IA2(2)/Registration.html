@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Raliegh's Apple Repair</title>
+    <!-- Google Fonts: Poppins for a modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables for consistent styling */
+        :root {
+            --primary-color: #007AFF; /* Apple Blue */
+            --secondary-color: #5AC8FA; /* Lighter Blue */
+            --dark-text: #1C1C1E;
+            --light-text: #F2F2F7;
+            --background-light: #FFFFFF;
+            --background-dark: #F5F5F7;
+            --border-color: #E0E0E0;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-hover: rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-dark);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Full viewport height */
+            color: var(--dark-text);
+            box-sizing: border-box;
+        }
+
+        #signup-container {
+            width: 90%;
+            max-width: 450px; /* Increased max-width to accommodate new fields */
+            padding: 30px;
+            background-color: var(--background-light);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px var(--shadow-hover);
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--dark-text);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"] { /* Added date input type */
+            width: calc(100% - 20px); /* Account for padding */
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            color: var(--dark-text);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.2);
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .signup-message {
+            font-size: 0.9rem;
+            color: red;
+            text-align: center;
+            margin-top: 1rem;
+            min-height: 1.2em; /* Reserve space to prevent layout shift */
+        }
+
+        .note {
+            font-size: 12px;
+            color: #777;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .back-to-login {
+            display: block;
+            margin-top: 20px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .back-to-login:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            #signup-container {
+                padding: 20px;
+                margin: 40px auto;
+            }
+            h2 {
+                font-size: 1.6rem;
+            }
+            input[type="text"],
+            input[type="email"],
+            input[type="password"],
+            input[type="date"],
+            button {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="signup-container">
+        <h2>Create Account</h2>
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" placeholder="John" required>
+            </div>
+
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" placeholder="Doe" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required>
+            </div>
+
+            <div class="form-group">
+                <label for="signupEmail">Email Address:</label>
+                <input type="email" id="signupEmail" name="signupEmail" placeholder="your@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="johndoe123" required>
+            </div>
+
+            <div class="form-group">
+                <label for="signupPassword">Password:</label>
+                <input
+                    type="password"
+                    id="signupPassword"
+                    name="signupPassword"
+                    required
+                    minlength="6"
+                    placeholder="At least 6 characters">
+            </div>
+
+            <button type="submit" id="createAccountBtn">Register</button>
+        </form>
+        <p class="signup-message" id="signupMessage"></p>
+        <div class="note">All fields are required. Password must be at least 6 characters.</div>
+        <a href="login.html" class="back-to-login">Already have an account? Log In</a>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase configuration (provided by Canvas environment)
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // DOM Elements
+        const signupForm = document.getElementById('signupForm');
+        const firstNameInput = document.getElementById('firstName');
+        const lastNameInput = document.getElementById('lastName');
+        const dobInput = document.getElementById('dob');
+        const signupEmailInput = document.getElementById('signupEmail');
+        const usernameInput = document.getElementById('username');
+        const signupPasswordInput = document.getElementById('signupPassword');
+        const createAccountBtn = document.getElementById('createAccountBtn');
+        const signupMessage = document.getElementById('signupMessage');
+
+        // --- Initial Authentication (Canvas Specific) ---
+        // If user somehow lands here already authenticated, redirect them.
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            signInWithCustomToken(auth, __initial_auth_token)
+                .then(() => {
+                    console.log("Signed in with custom token on signup page. Redirecting to main page.");
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    console.error("Error signing in with custom token on signup page:", error);
+                    // Fallback to anonymous sign-in if custom token fails
+                    signInAnonymously(auth)
+                        .then(() => console.log("Signed in anonymously on signup page."))
+                        .catch((anonError) => console.error("Error signing in anonymously on signup page:", anonError));
+                });
+        } else {
+            // Sign in anonymously to ensure Firebase is initialized for new user creation
+            signInAnonymously(auth)
+                .then(() => console.log("Signed in anonymously on signup page."))
+                .catch((error) => console.error("Error signing in anonymously on signup page:", error));
+        }
+
+        // --- Sign Up Form Handler ---
+        createAccountBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const firstName = firstNameInput.value;
+            const lastName = lastNameInput.value;
+            const dob = dobInput.value;
+            const email = signupEmailInput.value;
+            const username = usernameInput.value;
+            const password = signupPasswordInput.value;
+
+            signupMessage.textContent = ''; // Clear previous messages
+            console.log('Attempting to create account with email:', email); // Debug log
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                console.log('User created:', user); // Debug log
+
+                // Store additional user details in Firestore
+                const userDocRef = doc(db, `artifacts/${appId}/users/${user.uid}/profile/details`);
+                await setDoc(userDocRef, {
+                    firstName: firstName,
+                    lastName: lastName,
+                    dob: dob,
+                    email: email,
+                    username: username,
+                    createdAt: new Date()
+                });
+                console.log('User profile saved to Firestore.'); // Debug log
+
+                // Send email verification
+                await sendEmailVerification(user);
+                console.log('Email verification sent.'); // Debug log
+
+                signupMessage.textContent = 'Account created! Please check your email to verify your account before logging in.';
+                signupMessage.style.color = 'green';
+
+                // Optionally, redirect to login page after a delay
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 3000); // Redirect after 3 seconds
+
+            } catch (error) {
+                signupMessage.textContent = 'Sign up failed: ' + error.message;
+                signupMessage.style.color = 'red';
+                console.error("Sign up error:", error); // Debug log
+            }
+        });
+    </script>
+</body>
+</html>

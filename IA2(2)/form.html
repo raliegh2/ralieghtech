@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Raliegh's Apple Repair</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <style>
+    :root {
+      --primary-color: #007AFF;
+      --secondary-color: #5AC8FA;
+      --dark-text: #1C1C1E;
+      --light-text: #F2F2F7;
+      --background-light: #FFFFFF;
+      --background-dark: #F5F5F7;
+      --border-color: #E0E0E0;
+      --shadow-light: rgba(0, 0, 0, 0.08);
+      --shadow-hover: rgba(0, 0, 0, 0.15);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--background-dark);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #loginFormContainer {
+      max-width: 400px;
+      width: 90%;
+      padding: 30px;
+      background: var(--background-light);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px var(--shadow-hover);
+      text-align: center;
+    }
+
+    h2 {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    .signup-link {
+      margin-top: 20px;
+      font-size: 0.95rem;
+    }
+
+    .signup-link a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .signup-link a:hover {
+      text-decoration: underline;
+    }
+
+    .message-box {
+      margin-top: 15px;
+      display: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    .message-box.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .message-box.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div id="loginFormContainer">
+    <h2>Welcome Back!</h2>
+    <div id="messageBox" class="message-box"></div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="loginEmail">Email Address</label>
+        <input type="email" id="loginEmail" required>
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" required>
+      </div>
+      <button type="submit">Login</button>
+    </form>
+
+    <p class="signup-link">Don't have an account? <a href="registration.html">Sign up here</a></p>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // Your Firebase configuration object here
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const loginForm = document.getElementById('loginForm');
+    const loginEmailInput = document.getElementById('loginEmail');
+    const loginPasswordInput = document.getElementById('loginPassword');
+    const messageBox = document.getElementById('messageBox');
+
+    function showMessage(msg, type = 'success') {
+      messageBox.textContent = msg;
+      messageBox.className = `message-box ${type}`;
+      messageBox.style.display = 'block';
+    }
+
+    async function storeUserIfNew(user) {
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+      if (!userDoc.exists()) {
+        await setDoc(userDocRef, {
+          email: user.email,
+          uid: user.uid,
+          createdAt: new Date()
+        });
+      }
+    }
+
+    // Check if already signed in
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        showMessage(`Already logged in as ${user.email}. Redirecting...`, 'success');
+        await storeUserIfNew(user);
+        setTimeout(() => window.location.href = 'account.html', 2000); // Redirect to account.html
+      }
+    });
+
+    // Handle login
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = loginEmailInput.value.trim();
+      const password = loginPasswordInput.value;
+
+      showMessage('Logging in...', 'info');
+
+      try {
+        const result = await signInWithEmailAndPassword(auth, email, password);
+        await storeUserIfNew(result.user);
+        showMessage("Login successful! Redirecting...", 'success');
+        setTimeout(() => window.location.href = 'account.html', 1500); // Redirect to account.html
+      } catch (error) {
+        console.error("Login error:", error);
+        let msg = "Login failed. Please check your credentials.";
+        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+          msg = "Incorrect email or password.";
+        } else if (error.code === 'auth/invalid-email') {
+          msg = "Please enter a valid email.";
+        } else if (error.code === 'auth/too-many-requests') {
+          msg = "Too many failed attempts. Try again later.";
+        }
+        showMessage(msg, 'error');
+      }
+    });
+  </script>
+</body>
+</html>
